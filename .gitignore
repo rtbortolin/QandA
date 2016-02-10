@@ -21,6 +21,7 @@ QandA/parts/
 QandA/sdist/
 QandA/var/
 QandA/bin/
+QandA/obj/
 *.egg-info/
 .installed.cfg
 *.egg
