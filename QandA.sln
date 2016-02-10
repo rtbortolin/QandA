@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "QandA", "QandA\QandA.pyproj", "{C292B27A-66E1-45B6-8E46-A82D5F93DCFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C292B27A-66E1-45B6-8E46-A82D5F93DCFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C292B27A-66E1-45B6-8E46-A82D5F93DCFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C292B27A-66E1-45B6-8E46-A82D5F93DCFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C292B27A-66E1-45B6-8E46-A82D5F93DCFF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
