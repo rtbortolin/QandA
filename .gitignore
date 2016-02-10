@@ -8,18 +8,19 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
+QandA/env/
+QandA/build/
+QandA/develop-eggs/
+QandA/dist/
+QandA/downloads/
+QandA/eggs/
+QandA/.eggs/
+QandA/lib/
+QandA/lib64/
+QandA/parts/
+QandA/sdist/
+QandA/var/
+QandA/bin/
 *.egg-info/
 .installed.cfg
 *.egg
