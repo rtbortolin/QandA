@@ -1,5 +1,7 @@
 ﻿{% extends "app/layout.html" %}
 
+{% load datetime_extras %}
+
 {% block content %}
   <div class="row">
 
@@ -12,17 +14,17 @@
                 <h1>{{ question.title }}</h1>
 
                 <!-- Author -->
-                <p class="lead">
+                <!--<p class="lead">
                     by <a href="#">{{ question.creator.user.username }}</a>
-                </p>
+                </p>-->
 
                 <hr>
 
                 <!-- Date/Time -->
                 {% if question.days_since_post < 7 %}
-                    <p><span class="glyphicon glyphicon-time"></span> Posted {{ question.created_in|timesince }} ago</p>
+                    <p><span class="glyphicon glyphicon-time"></span> Posted {{ question.created_in|timesince }} ago by <a href="#">{{ question.creator.user.username }}</a></p>
                 {% else %}
-                    <p><span class="glyphicon glyphicon-time"></span> Posted on {{ question.created_in }}</p>
+                    <p><span class="glyphicon glyphicon-time"></span> Posted on {{ question.created_in }} by <a href="#">{{ question.creator.user.username }}</a></p>
                 {% endif%}
 
                 <hr>
@@ -34,26 +36,48 @@
 
                 <!-- Post Content -->
                 <!--<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum minus inventore?</p>-->
-                {{ question.body }}
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
+                {{ question.body|safe }}
+                <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p>-->
 
                 <hr>
+                {% for comment in question.questioncomment_set.all %}
+                    <div class="row {% cycle 'bg-comment' 'bg-comment-row' %} bg-comment-hover">
+                        <div class="col-md-9">
+                            {{ comment.text }}
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <a>{{comment.app_user.user.username}}</a><span class="small"> - {{ comment.created_in|datetime:"%b %d '%y at %H:%M" }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
 
                 <!-- Blog Comments -->
 
                 <!-- Comments Form -->
-                <div class="well">
-                    <h4>Leave a Comment:</h4>
-                    <form role="form">
+                <!--<div class="well">-->
+                    <h5 id="txt-leave-comment"><a>Leave a Comment</a></h5>
+                    <form action="{% url 'make_question_comment' %}" method="post" class="form" id="frm-make-comment">
+                        <div class="form-group">
+                            {% csrf_token %}
+                            <input type="hidden" id="id_question_id" name="question_id" value="{{ question.id }}" />
+                            <div class="form-group">
+                                <input class="form-control" id="id_comment" maxlength="255" name="comment" placeholder="Comment" required="required" title="" type="text">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-star"></span> Submit
+                        </button>
+                    </form>
+                    <!--<form role="form">
                         <div class="form-group">
                             <textarea class="form-control" rows="3"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
+                    </form>-->
+                <!--</div>-->
 
                 <hr>
 
@@ -158,4 +182,15 @@
             </div>
 
         </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        $('#frm-make-comment').hide();
+        $('#txt-leave-comment').click(function(){
+            $('#frm-make-comment').toggle();
+        });
+    });
+</script>
 {% endblock %}

@@ -1,3 +1,7 @@
 django<2
 pytz
 django-bootstrap3
+django-wysiwyg
+django-ckeditor
+
+django-debug-toolbar

@@ -1,13 +1,18 @@
 ﻿{% extends "app/layout.html" %}
 
 {% load bootstrap3 %}
+{% load wysiwyg %}
 
 
 {% block content %}
 
+{% wysiwyg_setup %}
+
 <form action="" method="post" class="form">
     {% csrf_token %}
+
     {% bootstrap_form form %}
+    {% wysiwyg_editor "id_body" %}
     {% buttons %}
         <button type="submit" class="btn btn-primary">
             {% bootstrap_icon "star" %} Submit

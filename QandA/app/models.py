@@ -56,3 +56,16 @@ class QuestionVote(Vote):
 class Tag(BaseEntity):
     name = models.CharField(max_length = 25)
     questions = models.ManyToManyField(Question)
+
+class Comment(BaseEntity):
+    text = models.CharField(max_length = 500)
+    app_user = models.ForeignKey(UserExtension)
+
+    class Meta: 
+        abstract = True
+
+class QuestionComment(Comment):
+    question = models.ForeignKey(Question)
+
+class AnswerComment(Comment):
+    answer = models.ForeignKey(Answer)

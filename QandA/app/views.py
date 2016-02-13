@@ -6,10 +6,11 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpRequest, HttpResponseRedirect
 from django.template import RequestContext
 from datetime import datetime
-from app.forms import QuestionForm
+from app.forms import QuestionForm, CommentForm
 from app.models import *
-from app.utils import AppUtils
+from app.utils import QuestionServices
 from django.views.generic.detail import DetailView
+from django.http.response import Http404
 
 
 def home(request):
@@ -59,10 +60,18 @@ def create_question(request):
         return render_to_response("app/questions/create.html", {'form':form},  RequestContext(request))
     elif request.method == 'POST':
         form = QuestionForm(request.POST)
-        utils = AppUtils()
-        question = utils.create_question(form.data['title'], form.data['body'], UserExtension.objects.get(pk = 1))
+        question_services = QuestionServices()
+        question = question_services.create_question(form.data['title'], form.data['body'], UserExtension.objects.get(pk = 1))
         return HttpResponseRedirect('/question/' + str(question.id))
 
+def make_question_comment(request):
+    if request.method == "GET":
+        raise Http404
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        question_service = QuestionServices()
+        comment = question_service.create_comment(form.data['comment'], form.data['question_id'], UserExtension.objects.get(pk = 1))        
+        return HttpResponseRedirect('/question/' + form.data['question_id'] + '?comment=' + str(comment.id))
 
 class QuestionDetailView(DetailView):
     """Renders the question details page."""
