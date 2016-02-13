@@ -1,0 +1,25 @@
+﻿{% load datetime_extras %}
+{% load uuid_extras %}
+
+<div class="row">
+    <div class="col-md-1"></div>
+        <div class="col-md-11">
+            {% for comment in comments %}
+                <div class="row {% cycle 'bg-comment' 'bg-comment-row' %} bg-comment-hover small">
+                    <div class="col-md-9">
+                        {{ comment.text }}
+                    </div>
+                    <div class="col-md-3 text-right small">
+                        <a>{{comment.app_user.user.username}}</a><span class="small"> - {{ comment.created_in|datetime:"%b %d '%y at %H:%M" }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+<!-- Create a comment -->
+{% if answer == None %}
+    {% include 'app/questions/create-question-comment-partial.html'%}
+{% else %}
+    {% include 'app/questions/create-answer-comment-partial.html'%}
+{% endif %}

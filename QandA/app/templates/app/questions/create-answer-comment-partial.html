@@ -1,0 +1,23 @@
+﻿{% load datetime_extras %}
+{% load uuid_extras %}
+
+<!-- Create a comment -->
+{% uuid uuid_val %}
+{% with uuid_val as uuid%}
+<div class="text-right">
+    <span id="txt-leave-comment" data-toggle data-toggle-for="frm-make-comment-{{ uuid }}"><a href="#">Leave a Comment</a></span>
+        <form action="{% url 'make_answer_comment' %}" method="post" class="form" id="frm-make-comment-{{ uuid }}" style="display: none;">
+            <div class="form-group">
+                {% csrf_token %}
+                <input type="hidden" id="id_question_id" name="question_id" value="{{ question.id }}" />
+                <input type="hidden" id="id_answer_id" name="answer_id" value="{{ answer.id }}" />
+                <div class="form-group">
+                    <input class="form-control" id="id_comment" maxlength="255" name="comment" placeholder="Comment" required="required" title="" type="text">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-star"></span> Submit
+            </button>
+        </form>
+</div>
+{% endwith%}

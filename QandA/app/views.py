@@ -8,7 +8,7 @@ from django.template import RequestContext
 from datetime import datetime
 from app.forms import QuestionForm, CommentForm
 from app.models import *
-from app.utils import QuestionServices
+from app.utils import QuestionServices, AnswerServices
 from django.views.generic.detail import DetailView
 from django.http.response import Http404
 
@@ -72,6 +72,23 @@ def make_question_comment(request):
         question_service = QuestionServices()
         comment = question_service.create_comment(form.data['comment'], form.data['question_id'], UserExtension.objects.get(pk = 1))        
         return HttpResponseRedirect('/question/' + form.data['question_id'] + '?comment=' + str(comment.id))
+
+def answer_a_question(request):
+    if request.method == "GET":
+        raise Http404
+    if request.method == "POST":
+        question_service = QuestionServices()
+        answer = question_service.make_a_answer(request.POST['body'], request.POST['question_id'], UserExtension.objects.get(pk = 1))        
+        return HttpResponseRedirect('/question/' + request.POST['question_id'] + '?answer=' + str(answer.id))
+
+def make_answer_comment(request):
+    if request.method == "GET":
+        raise Http404
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        answer_services = AnswerServices()
+        comment = answer_services.create_comment(form.data['comment'], form.data['question_id'], form.data['answer_id'], UserExtension.objects.get(pk = 1))        
+        return HttpResponseRedirect('/question/' + form.data['question_id'] + '?comment=' + str(comment.id) + '&answer=' + form.data['answer_id'])
 
 class QuestionDetailView(DetailView):
     """Renders the question details page."""

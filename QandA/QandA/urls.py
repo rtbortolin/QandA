@@ -37,10 +37,12 @@ urlpatterns = [
             'next_page': '/',
         },
         name='logout'),
-    url(r'^question/create$', app.views.create_question, name = "Create Question"),
+    url(r'^question/create$', app.views.create_question, name = "create_question"),
     url(r'^question/(?P<pk>\d+)$', app.views.QuestionDetailView.as_view(template_name='app/questions/details.html'), name = "Question Detail"),
 
-    url(r'^question/comment', app.views.make_question_comment, name = "make_question_comment"),
+    url(r'^question/comment$', app.views.make_question_comment, name = "make_question_comment"),
+    url(r'^question/answer$', app.views.answer_a_question, name = "answer_a_question"),
+    url(r'^question/answer/comment$', app.views.make_answer_comment, name = "make_answer_comment"),
         #url(r'^$', HomePageView.as_view(), name='home'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
