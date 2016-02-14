@@ -38,6 +38,11 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
+hr {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
 .bg-comment {
     background-color: whitesmoke;
 }

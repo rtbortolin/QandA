@@ -7,44 +7,51 @@
 
 {% wysiwyg_setup %}
 
-  <div class="row">
+        <div class="row">
 
             <!-- Question Content Column -->
             <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-lg-1"></div>
+                    <div class="col-md-11">
+                         <!-- Title -->
+                        <h1>{{ question.title }}</h1>
 
-                <!-- Title -->
-                <h1>{{ question.title }}</h1>
+                        <hr>
+                        <!-- Author Date/Time -->
+                        {% if question.days_since_post < 7 %}
+                            <span class="glyphicon glyphicon-time"></span> Asked {{ question.created_in|timesince }} ago by <a href="#">{{ question.creator.user.username }}</a>
+                        {% else %}
+                            <span class="glyphicon glyphicon-time"></span> Asked on {{ question.created_in }} by <a href="#">{{ question.creator.user.username }}</a>
+                        {% endif%}
 
-                <hr>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-1">
+                        VOTE
+                    </div>
+                    <div class="col-md-11">
+                        <!-- Question Body -->
+                        {{ question.body|safe }}
+                        
+                        <hr>
 
-                <!-- Author Date/Time -->
-                {% if question.days_since_post < 7 %}
-                    <p><span class="glyphicon glyphicon-time"></span> Asked {{ question.created_in|timesince }} ago by <a href="#">{{ question.creator.user.username }}</a></p>
-                {% else %}
-                    <p><span class="glyphicon glyphicon-time"></span> Asked on {{ question.created_in }} by <a href="#">{{ question.creator.user.username }}</a></p>
-                {% endif%}
+                        <!-- Comments -->
+                        {% with question.questioncomment_set.all as comments %}
+                            {% include 'app/questions/comments-partial.html' %}
+                        {% endwith %}                
 
-                <hr>
-
-                <!-- Preview Image -->
-                <!--<img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                <hr>-->
-
-                <!-- Question Body -->
-                {{ question.body|safe }}
-                
-                <hr>
-
-                <!-- Comments -->
-                {% with question.questioncomment_set.all as comments %}
-                    {% include 'app/questions/comments-partial.html' %}
-                {% endwith %}                
-
-                <hr />
+                        <hr />
+                    </div>
+                </div>               
 
                 <!-- Answers -->
                 {% for answer in question.answer_set.all %}
-                    <div class="row">
+                <div class="row">
+                    <div class="col-lg-1">VOTE</div>
+                    <div class="col-lg-11">
                         <div class="row">
                             <div class="col-md-12">
                                 {{ answer.body|safe }}
@@ -55,13 +62,13 @@
                                 Answered by <a>{{ answer.creator.user.username }}</a><span class="small"> at {{ answer.created_in|datetime:"%b %d '%y at %H:%M" }}</span>
                             </div>
                         </div>
+                        <hr />
+
+                        {% with answer.answercomment_set.all as comments %}
+                            {% include 'app/questions/comments-partial.html' %}
+                        {% endwith %}  
                     </div>
-                    <hr />
-
-                    {% with answer.answercomment_set.all as comments %}
-                        {% include 'app/questions/comments-partial.html' %}
-                    {% endwith %}  
-
+                </div>
                 {% endfor%}
 
                 <!-- New Answer Form-->
