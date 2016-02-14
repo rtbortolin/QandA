@@ -151,20 +151,15 @@
 
 {% block scripts %}
 <script>
-    $(document).ready(function(){
-        //$('#frm-make-comment').hide();
-        //$('#txt-leave-comment').click(function(){
-        //    $('#frm-make-comment').slideToggle();
-        //});
-
+    $(document).ready(function () {
         $('[data-toggle]').click(function () {
             elementname = '#' + $(this).data('toggle-for');
+            if (elementname === '#undefined')
+                return;
             element = $(elementname);
             element.slideToggle();
             return false;
         });
     });
-
-
 </script>
 {% endblock %}

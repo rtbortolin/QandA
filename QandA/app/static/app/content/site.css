@@ -38,6 +38,16 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
+.navbar-nav > li > a, .navbar-brand {
+    padding-top: 5px !important;
+    padding-bottom: 0 !important;
+    height: 32px;
+}
+
+.navbar {
+    min-height: 32px !important;
+}
+
 hr {
     margin-bottom: 5px;
     margin-top: 5px;
