@@ -3,7 +3,7 @@ Definition of views.
 """
 
 from django.shortcuts import render, render_to_response
-from django.http import HttpRequest, HttpResponseRedirect
+from django.http import HttpRequest, HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from datetime import datetime
 from app.forms import QuestionForm, CommentForm
@@ -89,6 +89,12 @@ def make_answer_comment(request):
         answer_services = AnswerServices()
         comment = answer_services.create_comment(form.data['comment'], form.data['question_id'], form.data['answer_id'], UserExtension.objects.get(pk = 1))        
         return HttpResponseRedirect('/question/' + form.data['question_id'] + '?comment=' + str(comment.id) + '&answer=' + form.data['answer_id'])
+
+def make_a_vote(request):
+    if request.method == "GET":
+        raise Http404
+    if request.method == "POST":
+        return HttpResponse('true', content_type="application/json")
 
 class QuestionDetailView(DetailView):
     """Renders the question details page."""

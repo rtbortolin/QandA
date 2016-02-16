@@ -1,0 +1,7 @@
+<div class="row text-center">
+    <a href="{% url 'make_a_vote' %}" onclick="return false;" data-vote="{{ data_vote }}" data-question_id="{{ question.id }}" data-answer_id="{{ answer.id }}" data-vote_type="like"><span class="glyphicon glyphicon-thumbs-up glyphicon-vote"></span></a>
+</div>
+<hr />
+<div class="row text-center">
+    <a href="{% url 'make_a_vote' %}" onclick="return false;" data-vote="{{ data_vote }}" data-question_id="{{ question.id }}" data-answer_id="{{ answer.id }}" data-vote_type="deslike"><span class="glyphicon glyphicon-thumbs-down glyphicon-vote"></span></a>
+</div>

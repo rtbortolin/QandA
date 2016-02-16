@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^question/comment$', app.views.make_question_comment, name = "make_question_comment"),
     url(r'^question/answer$', app.views.answer_a_question, name = "answer_a_question"),
     url(r'^question/answer/comment$', app.views.make_answer_comment, name = "make_answer_comment"),
+    url(r'^question/vote$', app.views.make_a_vote, name = "make_a_vote"),
         #url(r'^$', HomePageView.as_view(), name='home'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

@@ -29,8 +29,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-1">
-                        VOTE
+                    <div class="col-xs-1">
+                        {% with data_vote='question' %}
+                        {% include 'app/questions/vote-partial.html' %}    
+                        {% endwith %}                   
                     </div>
                     <div class="col-md-11">
                         <!-- Question Body -->
@@ -50,7 +52,11 @@
                 <!-- Answers -->
                 {% for answer in question.answer_set.all %}
                 <div class="row">
-                    <div class="col-lg-1">VOTE</div>
+                    <div class="col-xs-1">
+                        {% with data_vote='answer' %}
+                        {% include 'app/questions/vote-partial.html' %}    
+                        {% endwith %}                   
+                    </div>
                     <div class="col-lg-11">
                         <div class="row">
                             <div class="col-md-12">
@@ -73,19 +79,19 @@
 
                 <!-- New Answer Form-->
                 <h5 id="txt-create-answer" data-toggle data-toggle-for="frm-create-answer"><a>New Answer</a></h5>
-                    <form action="{% url 'answer_a_question' %}" method="post" class="form" id="frm-create-answer" style="display:none;">
+                <form action="{% url 'answer_a_question' %}" method="post" class="form" id="frm-create-answer" style="display:none;">
+                    <div class="form-group">
+                        {% csrf_token %}
+                        <input type="hidden" id="id_question_id" name="question_id" value="{{ question.id }}" />
                         <div class="form-group">
-                            {% csrf_token %}
-                            <input type="hidden" id="id_question_id" name="question_id" value="{{ question.id }}" />
-                            <div class="form-group">
-                                <textarea class="form-control" cols="40" id="id_body" name="body" placeholder="Body" rows="10" title=""></textarea>
-                            </div>
+                            <textarea class="form-control" cols="40" id="id_body" name="body" placeholder="Body" rows="10" title=""></textarea>
                         </div>
-                        {% wysiwyg_editor "id_body" %}
-                        <button type="submit" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-star"></span> Submit
-                        </button>
-                    </form>
+                    </div>
+                    {% wysiwyg_editor "id_body" %}
+                    <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-star"></span> Submit
+                    </button>
+                </form>
             </div>
 
             <!-- Blog Sidebar Widgets Column -->
@@ -153,13 +159,84 @@
 <script>
     $(document).ready(function () {
         $('[data-toggle]').click(function () {
-            elementname = '#' + $(this).data('toggle-for');
-            if (elementname === '#undefined')
-                return;
-            element = $(elementname);
-            element.slideToggle();
-            return false;
+            return toggleWriteCommentAnswer($(this));
+        });
+
+        $('[data-vote]').click(function () {
+            return vote($(this));
         });
     });
+
+    function toggleWriteCommentAnswer(element) {
+        var elementnamefor = '#' + element.data('toggle-for');
+        if (elementnamefor === '#undefined')
+            return;
+        var elementfor = $(elementnamefor);
+        elementfor.slideToggle();
+        return false;
+    }
+
+    function vote(element) {
+        var voted_class_l = 'glyphicon-just-voted-l';
+        var voted_class_d = 'glyphicon-just-voted-d';
+
+        var span = element.children()[0];
+        if ($(span).hasClass(voted_class_l) || $(span).hasClass(voted_class_d))
+            return false;
+
+        var votefor = element.data('vote');
+        var question_id = element.data('question_id');
+        var answer_id = element.data('answer_id');
+        var vote_type = element.data('vote_type');
+        var url = element.attr('href');
+
+
+
+        $.post(url, {
+            'question_id': question_id,
+            'votefor': votefor,
+            'answer_id': answer_id,
+            'vote_type': vote_type
+        }, function (data) {
+            if (data == true) {
+                if (vote_type == 'like')
+                    $(span).addClass(voted_class_l);
+                else
+                    $(span).addClass(voted_class_d);
+            }
+            else
+                console.log('vote result: ' + data);
+        });
+
+        return false;
+    }
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        }
+    });
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 </script>
 {% endblock %}

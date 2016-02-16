@@ -70,3 +70,37 @@ hr {
     -o-transition: all 0.2s;
     transition: all 0.2s;
 }
+
+span.glyphicon-vote {
+    font-size: 2em;
+    color: #777;
+}
+
+    span.glyphicon-vote:hover {
+        color: #000000;
+        -webkit-transition: all 0.3s;
+        -o-transition: all 0.3s;
+        transition: all 0.3s;
+    }
+
+span.glyphicon-voted-l {
+    color: #459a3c;
+}
+
+span.glyphicon-just-voted-l {
+    color: #459a3c;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+span.glyphicon-voted-d {
+    color: #be3834;
+}
+
+span.glyphicon-just-voted-d {
+    color: #be3834;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}

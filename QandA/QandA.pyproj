@@ -30,6 +30,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="app\context_processor.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\forms.py" />
     <Compile Include="app\models.py">
       <SubType>Code</SubType>
@@ -65,6 +68,7 @@
     <Folder Include="QandA\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\templates\app\questions\vote-partial.html" />
     <Content Include="app\templates\app\questions\create-answer-comment-partial.html" />
     <Content Include="app\templates\app\questions\create-question-comment-partial.html" />
     <Content Include="app\templates\app\questions\comments-partial.html" />
