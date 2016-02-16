@@ -1,4 +1,4 @@
-from app.models import Question, QuestionComment, Answer, AnswerComment
+from app.models import Question, QuestionComment, Answer, AnswerComment, QuestionVote, AnswerVote
 
 class QuestionServices(object):
 
@@ -33,6 +33,15 @@ class QuestionServices(object):
         question.save()
         return answer
 
+    def vote(self, question_id, vote_type, user):
+        question = Question.objects.get(pk = question_id)
+        vote = QuestionVote()
+        vote.grade = vote_type
+        vote.question = question
+        vote.voter = user
+        question.save()
+        vote.save()
+
 class AnswerServices(object):
     
     def create_comment(self, comment_text, question_id, answer_id, user):
@@ -45,5 +54,15 @@ class AnswerServices(object):
         comment.save()
         question.save()
         return comment
+
+    def vote(self, question_id, answer_id, vote_type, user):
+        answer = Answer.objects.get(pk = answer_id)
+        question = Question.objects.get(pk = question_id)
+        vote = AnswerVote()
+        vote.grade = vote_type
+        vote.answer = answer
+        vote.voter = user
+        question.save()
+        vote.save()
 
 

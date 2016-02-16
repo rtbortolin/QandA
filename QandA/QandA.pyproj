@@ -38,6 +38,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="app\templatetags\datetime_extras.py" />
+    <Compile Include="app\templatetags\list_extras.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\templatetags\uuid_extras.py">
       <SubType>Code</SubType>
     </Compile>

@@ -94,7 +94,28 @@ def make_a_vote(request):
     if request.method == "GET":
         raise Http404
     if request.method == "POST":
-        return HttpResponse('true', content_type="application/json")
+        question_id = request.POST['question_id']
+        answer_id = request.POST['answer_id']
+        vote_for = request.POST['votefor']
+        vote_type = request.POST['vote_type']
+
+        vote_type = 'P' if vote_type == 'like' else 'N'
+           
+        if(answer_id == '' and vote_for == 'answer'):
+            raise Http404
+
+        if(vote_for == 'question'):
+            question_utils = QuestionServices()
+            question_utils.vote(question_id, vote_type, UserExtension.objects.get(pk = 1))
+            return HttpResponse('true', content_type="application/json")
+        elif (vote_for == 'answer'):
+            answer_utils = AnswerServices()
+            answer_utils.vote(question_id, answer_id, vote_type, UserExtension.objects.get(pk = 1)) 
+            return HttpResponse('true', content_type="application/json")
+        else :
+            return HttpResponse('false', content_type="application/json")
+                    
+        
 
 class QuestionDetailView(DetailView):
     """Renders the question details page."""

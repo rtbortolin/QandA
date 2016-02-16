@@ -3,6 +3,7 @@
 {% load wysiwyg %}
 {% load datetime_extras %}
 {% load uuid_extras %}
+{% load list_extras %}
 {% block content %}
 
 {% wysiwyg_setup %}
@@ -50,7 +51,7 @@
                 </div>               
 
                 <!-- Answers -->
-                {% for answer in question.answer_set.all %}
+                {% for answer in question.answer_set.all|sort_answer %}
                 <div class="row">
                     <div class="col-xs-1">
                         {% with data_vote='answer' %}

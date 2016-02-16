@@ -2,6 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+import logging
+logger = logging.getLogger(__name__)
+del logging
+
+
 class BaseEntity(models.Model):
     created_in = models.DateTimeField(auto_now_add = True)
     updated_in = models.DateTimeField(auto_now = True)
@@ -29,7 +34,7 @@ class Vote(BaseEntity):
         ("P", "Positive"),
         ("N", "Negative"),
     )
-    voter = models.OneToOneField(UserExtension)
+    voter = models.ForeignKey(UserExtension)
     grade = models.CharField(max_length = 1, choices = GRADE_VALUES)
 
     class Meta:
@@ -45,6 +50,13 @@ class Answer(Post):
     is_accepted = models.BooleanField()
     creator = models.ForeignKey(UserExtension, related_name = "answer_created")
     updater = models.ForeignKey(UserExtension, related_name = "answer_updated")
+
+    def vote_score(self):
+        positive_votes = self.answervote_set.filter(grade = 'P').count()
+        negative_votes = self.answervote_set.filter(grade = 'N').count()
+        logger.info("vote id: " + str(self.id) + " positives votes: " + str(positive_votes) + " negative votes: " + str(negative_votes))
+        return positive_votes - negative_votes;
+
 
 class AnswerVote(Vote):
     answer = models.ForeignKey(Answer)
