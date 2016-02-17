@@ -57,7 +57,7 @@ class Answer(Post):
     def vote_score(self):
         positive_votes = self.answervote_set.filter(grade = 'P').count()
         negative_votes = self.answervote_set.filter(grade = 'N').count()
-        logger.info("vote id: " + str(self.id) + " positives votes: " + str(positive_votes) + " negative votes: " + str(negative_votes))
+        logger.info("votes - answer id: " + str(self.id) + " positives votes: " + str(positive_votes) + " negative votes: " + str(negative_votes))
         return positive_votes - negative_votes;
 
 
