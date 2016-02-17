@@ -15,9 +15,12 @@ class BaseEntity(models.Model):
     class Meta:
         abstract = True
 
-class UserExtension(BaseEntity):
+class UserProfile(BaseEntity):
     user = models.OneToOneField(User, primary_key = True)
     points = models.IntegerField(default = 0)
+
+    class Meta:
+        db_table= 'app_user_profile'
 
 class Post(BaseEntity):
     body = models.TextField()
@@ -34,7 +37,7 @@ class Vote(BaseEntity):
         ("P", "Positive"),
         ("N", "Negative"),
     )
-    voter = models.ForeignKey(UserExtension)
+    voter = models.ForeignKey(UserProfile)
     grade = models.CharField(max_length = 1, choices = GRADE_VALUES)
 
     class Meta:
@@ -42,14 +45,14 @@ class Vote(BaseEntity):
 
 class Question(Post):
     title = models.CharField(max_length = 255)
-    creator = models.ForeignKey(UserExtension, related_name = "questions_created")
-    updater = models.ForeignKey(UserExtension, related_name = "questions_updated")
+    creator = models.ForeignKey(UserProfile, related_name = "questions_created")
+    updater = models.ForeignKey(UserProfile, related_name = "questions_updated")
 
 class Answer(Post):
     question = models.ForeignKey(Question)
     is_accepted = models.BooleanField()
-    creator = models.ForeignKey(UserExtension, related_name = "answer_created")
-    updater = models.ForeignKey(UserExtension, related_name = "answer_updated")
+    creator = models.ForeignKey(UserProfile, related_name = "answer_created")
+    updater = models.ForeignKey(UserProfile, related_name = "answer_updated")
 
     def vote_score(self):
         positive_votes = self.answervote_set.filter(grade = 'P').count()
@@ -61,8 +64,14 @@ class Answer(Post):
 class AnswerVote(Vote):
     answer = models.ForeignKey(Answer)
 
+    class Meta:
+        db_table= 'app_answer_vote'
+
 class QuestionVote(Vote):
     question = models.ForeignKey(Question)
+
+    class Meta:
+        db_table= 'app_question_vote'
 
 
 class Tag(BaseEntity):
@@ -71,7 +80,7 @@ class Tag(BaseEntity):
 
 class Comment(BaseEntity):
     text = models.CharField(max_length = 500)
-    app_user = models.ForeignKey(UserExtension)
+    app_user = models.ForeignKey(UserProfile)
 
     class Meta: 
         abstract = True
@@ -79,5 +88,11 @@ class Comment(BaseEntity):
 class QuestionComment(Comment):
     question = models.ForeignKey(Question)
 
+    class Meta:
+        db_table= 'app_question_comment'
+
 class AnswerComment(Comment):
     answer = models.ForeignKey(Answer)
+
+    class Meta:
+        db_table= 'app_answer_comment'
